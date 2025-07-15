@@ -38,7 +38,7 @@ Cette application permet de gérer des **contrats de location décentralisés** 
 
 ---
 
-## 🧠 Smart Contracts (3 au total)
+## Smart Contracts (3 au total)
 
 ### 1. **RentalNFT.sol**
 
