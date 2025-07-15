@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'back-front/**'
+  workflow_dispatch:
 
 jobs:
   build:
