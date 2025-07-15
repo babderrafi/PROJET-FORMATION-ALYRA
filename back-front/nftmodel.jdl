@@ -1,3 +1,7 @@
+
+Fichier de création des entités pour JHIPSTER
+
+
 entity Car {
   name String required
   nftId String required
