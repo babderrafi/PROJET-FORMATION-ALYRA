@@ -1,0 +1,33 @@
+{
+  "applications": "*",
+  "changelogDate": "20250604121055",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "part",
+  "fields": [
+    {
+      "fieldName": "ownerWallet",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "percentage",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Part",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "car",
+      "otherEntityRelationshipName": "part",
+      "relationshipName": "car",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+    <!--
+        Added the constraints for entity Distribution.
+    -->
+    <changeSet id="20250604121057-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="revenue_id"
+                                 baseTableName="distribution"
+                                 constraintName="fk_distribution__revenue_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="revenue"/>
+
+        <addForeignKeyConstraint baseColumnNames="part_id"
+                                 baseTableName="distribution"
+                                 constraintName="fk_distribution__part_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="part"/>
+    </changeSet>
+</databaseChangeLog>

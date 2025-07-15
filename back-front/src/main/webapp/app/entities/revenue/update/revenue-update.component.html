@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-revenue-heading" data-cy="RevenueCreateUpdateHeading">Create or edit a Revenue</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_month">Month</label>
+          <div class="d-flex">
+            <input
+              id="field_month"
+              data-cy="month"
+              type="datetime-local"
+              class="form-control"
+              name="month"
+              formControlName="month"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('month')!.invalid && (editForm.get('month')!.dirty || editForm.get('month')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('month')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('month')?.errors?.ZonedDateTimelocal">
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_amountEur">Amount Eur</label>
+          <input type="number" class="form-control" name="amountEur" id="field_amountEur" data-cy="amountEur" formControlName="amountEur" />
+          <div *ngIf="editForm.get('amountEur')!.invalid && (editForm.get('amountEur')!.dirty || editForm.get('amountEur')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('amountEur')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('amountEur')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_amountUsdc">Amount Usdc</label>
+          <input
+            type="number"
+            class="form-control"
+            name="amountUsdc"
+            id="field_amountUsdc"
+            data-cy="amountUsdc"
+            formControlName="amountUsdc"
+          />
+          <div *ngIf="editForm.get('amountUsdc')!.invalid && (editForm.get('amountUsdc')!.dirty || editForm.get('amountUsdc')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('amountUsdc')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('amountUsdc')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_car">Car</label>
+          <select class="form-control" id="field_car" data-cy="car" name="car" formControlName="car">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="carOption.id === editForm.get('car')!.value?.id ? editForm.get('car')!.value : carOption"
+              *ngFor="let carOption of carsSharedCollection; trackBy: trackCarById"
+            >
+              {{ carOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

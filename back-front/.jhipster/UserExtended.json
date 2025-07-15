@@ -1,0 +1,46 @@
+{
+  "applications": "*",
+  "changelogDate": "20250703090718",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "user_extended",
+  "fields": [
+    {
+      "fieldName": "role",
+      "fieldType": "UserRole",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LOCATAIRE,LOUEUR,ADMIN"
+    },
+    {
+      "fieldName": "ethereumAddress",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "UserExtended",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "vehicle",
+      "otherEntityRelationshipName": "loueur",
+      "relationshipName": "vehicles",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "rentalContract",
+      "otherEntityRelationshipName": "locataire",
+      "relationshipName": "rentalContractsAsLocataire",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "rentalContract",
+      "otherEntityRelationshipName": "loueur",
+      "relationshipName": "rentalContractsAsLoueur",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

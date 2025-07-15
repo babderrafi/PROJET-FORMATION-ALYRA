@@ -1,0 +1,56 @@
+{
+  "applications": "*",
+  "changelogDate": "20250703090720",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "rental_contract",
+  "fields": [
+    {
+      "fieldName": "dateDebut",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateFin",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "statut",
+      "fieldType": "StatutContrat",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "EN_ATTENTE_SIGNATURE,SIGNE,TERMINE"
+    },
+    {
+      "fieldName": "fraisAppliques",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "RentalContract",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "vehicle",
+      "otherEntityRelationshipName": "rentalContract",
+      "relationshipName": "vehicle",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userExtended",
+      "otherEntityRelationshipName": "rentalContractsAsLocataire",
+      "relationshipName": "locataire",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "userExtended",
+      "otherEntityRelationshipName": "rentalContractsAsLoueur",
+      "relationshipName": "loueur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

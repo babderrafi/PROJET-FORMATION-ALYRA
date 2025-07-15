@@ -1,0 +1,78 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-part-heading" data-cy="PartCreateUpdateHeading">Create or edit a Part</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_ownerWallet">Owner Wallet</label>
+          <input
+            type="text"
+            class="form-control"
+            name="ownerWallet"
+            id="field_ownerWallet"
+            data-cy="ownerWallet"
+            formControlName="ownerWallet"
+          />
+          <div *ngIf="editForm.get('ownerWallet')!.invalid && (editForm.get('ownerWallet')!.dirty || editForm.get('ownerWallet')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('ownerWallet')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_percentage">Percentage</label>
+          <input
+            type="number"
+            class="form-control"
+            name="percentage"
+            id="field_percentage"
+            data-cy="percentage"
+            formControlName="percentage"
+          />
+          <div *ngIf="editForm.get('percentage')!.invalid && (editForm.get('percentage')!.dirty || editForm.get('percentage')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('percentage')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('percentage')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_car">Car</label>
+          <select class="form-control" id="field_car" data-cy="car" name="car" formControlName="car">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="carOption.id === editForm.get('car')!.value?.id ? editForm.get('car')!.value : carOption"
+              *ngFor="let carOption of carsSharedCollection; trackBy: trackCarById"
+            >
+              {{ carOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

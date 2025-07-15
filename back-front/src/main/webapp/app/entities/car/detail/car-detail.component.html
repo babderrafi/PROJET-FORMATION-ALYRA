@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="car">
+      <h2 data-cy="carDetailsHeading"><span>Car</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ car.id }}</span>
+        </dd>
+        <dt><span>Name</span></dt>
+        <dd>
+          <span>{{ car.name }}</span>
+        </dd>
+        <dt><span>Nft Id</span></dt>
+        <dd>
+          <span>{{ car.nftId }}</span>
+        </dd>
+        <dt><span>Total Parts</span></dt>
+        <dd>
+          <span>{{ car.totalParts }}</span>
+        </dd>
+        <dt><span>Purchase Price</span></dt>
+        <dd>
+          <span>{{ car.purchasePrice }}</span>
+        </dd>
+        <dt><span>Admin Fees</span></dt>
+        <dd>
+          <span>{{ car.adminFees }}</span>
+        </dd>
+        <dt><span>Tokenization Cost</span></dt>
+        <dd>
+          <span>{{ car.tokenizationCost }}</span>
+        </dd>
+        <dt><span>Maintenance Provision</span></dt>
+        <dd>
+          <span>{{ car.maintenanceProvision }}</span>
+        </dd>
+        <dt><span>Management Margin</span></dt>
+        <dd>
+          <span>{{ car.managementMargin }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/car', car.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

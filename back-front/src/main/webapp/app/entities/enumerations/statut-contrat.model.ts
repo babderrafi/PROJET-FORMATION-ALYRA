@@ -1,0 +1,7 @@
+export enum StatutContrat {
+  EN_ATTENTE_SIGNATURE = 'EN_ATTENTE_SIGNATURE',
+
+  SIGNE = 'SIGNE',
+
+  TERMINE = 'TERMINE',
+}

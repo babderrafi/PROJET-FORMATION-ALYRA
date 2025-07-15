@@ -1,0 +1,148 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-rental-contract-heading" data-cy="RentalContractCreateUpdateHeading">Créer ou modifier un contrat de location</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_dateDebut">Date Debut</label>
+          <div class="d-flex">
+            <input
+              id="field_dateDebut"
+              data-cy="dateDebut"
+              type="datetime-local"
+              class="form-control"
+              name="dateDebut"
+              formControlName="dateDebut"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('dateDebut')!.invalid && (editForm.get('dateDebut')!.dirty || editForm.get('dateDebut')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('dateDebut')?.errors?.required"> Obligatoire. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('dateDebut')?.errors?.ZonedDateTimelocal">
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_dateFin">Date Fin</label>
+          <div class="d-flex">
+            <input
+              id="field_dateFin"
+              data-cy="dateFin"
+              type="datetime-local"
+              class="form-control"
+              name="dateFin"
+              formControlName="dateFin"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+          <div *ngIf="editForm.get('dateFin')!.invalid && (editForm.get('dateFin')!.dirty || editForm.get('dateFin')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('dateFin')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('dateFin')?.errors?.ZonedDateTimelocal">
+              This field should be a date and time.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_statut">Statut</label>
+          <select class="form-control" name="statut" formControlName="statut" id="field_statut" data-cy="statut">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let statutContrat of statutContratValues" [value]="statutContrat">{{statutContrat}}</option>
+          </select>
+          <div *ngIf="editForm.get('statut')!.invalid && (editForm.get('statut')!.dirty || editForm.get('statut')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('statut')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_fraisAppliques">Montant location ETH</label>
+          <input
+            type="number"
+            class="form-control"
+            name="fraisAppliques"
+            id="field_fraisAppliques"
+            data-cy="fraisAppliques"
+            formControlName="fraisAppliques"
+          />
+          <div
+            *ngIf="
+              editForm.get('fraisAppliques')!.invalid && (editForm.get('fraisAppliques')!.dirty || editForm.get('fraisAppliques')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('fraisAppliques')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('fraisAppliques')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_vehicle">Vehicle</label>
+          <select class="form-control" id="field_vehicle" data-cy="vehicle" name="vehicle" formControlName="vehicle">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="vehicleOption.id === editForm.get('vehicle')!.value?.id ? editForm.get('vehicle')!.value : vehicleOption"
+              *ngFor="let vehicleOption of vehiclesSharedCollection; trackBy: trackVehicleById"
+            >
+              {{ vehicleOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_locataire">Locataire</label>
+          <select class="form-control" id="field_locataire" data-cy="locataire" name="locataire" formControlName="locataire">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="
+                userExtendedOption.id === editForm.get('locataire')!.value?.id ? editForm.get('locataire')!.value : userExtendedOption
+              "
+              *ngFor="let userExtendedOption of userExtendedsSharedCollection; trackBy: trackUserExtendedById"
+            >
+              {{ userExtendedOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_loueur">Loueur</label>
+          <select class="form-control" id="field_loueur" data-cy="loueur" name="loueur" formControlName="loueur">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userExtendedOption.id === editForm.get('loueur')!.value?.id ? editForm.get('loueur')!.value : userExtendedOption"
+              *ngFor="let userExtendedOption of userExtendedsSharedCollection; trackBy: trackUserExtendedById"
+            >
+              {{ userExtendedOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

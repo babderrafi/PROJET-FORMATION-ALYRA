@@ -1,0 +1,84 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-distribution-heading" data-cy="DistributionCreateUpdateHeading">Create or edit a Distribution</h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_amountUsdc">Amount Usdc</label>
+          <input
+            type="number"
+            class="form-control"
+            name="amountUsdc"
+            id="field_amountUsdc"
+            data-cy="amountUsdc"
+            formControlName="amountUsdc"
+          />
+          <div *ngIf="editForm.get('amountUsdc')!.invalid && (editForm.get('amountUsdc')!.dirty || editForm.get('amountUsdc')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('amountUsdc')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('amountUsdc')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_status">Status</label>
+          <input type="text" class="form-control" name="status" id="field_status" data-cy="status" formControlName="status" />
+          <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('status')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_revenue">Revenue</label>
+          <select class="form-control" id="field_revenue" data-cy="revenue" name="revenue" formControlName="revenue">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="revenueOption.id === editForm.get('revenue')!.value?.id ? editForm.get('revenue')!.value : revenueOption"
+              *ngFor="let revenueOption of revenuesSharedCollection; trackBy: trackRevenueById"
+            >
+              {{ revenueOption.id }}
+            </option>
+          </select>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_part">Part</label>
+          <select class="form-control" id="field_part" data-cy="part" name="part" formControlName="part">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="partOption.id === editForm.get('part')!.value?.id ? editForm.get('part')!.value : partOption"
+              *ngFor="let partOption of partsSharedCollection; trackBy: trackPartById"
+            >
+              {{ partOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

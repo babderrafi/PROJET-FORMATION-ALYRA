@@ -1,0 +1,64 @@
+entity Car {
+  name String required
+  nftId String required
+  totalParts Integer required
+  purchasePrice BigDecimal required
+  adminFees BigDecimal required
+  tokenizationCost BigDecimal required
+  maintenanceProvision BigDecimal required
+  managementMargin BigDecimal required
+}
+
+entity UserExtended {
+  role UserRole required
+  ethereumAddress String required
+}
+
+enum UserRole {
+  LOCATAIRE, LOUEUR, ADMIN
+}
+
+entity Vehicle {
+  marque String required
+  modele String required
+  description String
+  tarifJournalier BigDecimal required
+  disponible Boolean required
+}
+
+entity RentalContract {
+  dateDebut Instant required
+  dateFin Instant required
+  statut StatutContrat required
+  fraisAppliques BigDecimal required
+}
+
+enum StatutContrat {
+  EN_ATTENTE_SIGNATURE, SIGNE, TERMINE
+}
+
+entity NFTLevel {
+  niveau String required
+  seuilLocation Integer required
+  tauxFrais BigDecimal required
+}
+
+entity FeePool {
+  montantCollecte BigDecimal required
+  montantRedistribue BigDecimal
+}
+
+relationship OneToMany {
+  UserExtended{vehicles} to Vehicle{loueur}
+  UserExtended{rentalContractsAsLocataire} to RentalContract{locataire}
+  UserExtended{rentalContractsAsLoueur} to RentalContract{loueur}
+}
+
+relationship ManyToOne {
+  RentalContract{vehicle} to Vehicle
+}
+
+
+dto Car, UserExtended, Vehicle, RentalContract, NFTLevel, FeePool with mapstruct
+paginate Vehicle, RentalContract with pagination
+service all with serviceClass

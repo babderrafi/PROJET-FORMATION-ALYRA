@@ -1,0 +1,31 @@
+{
+  "applications": "*",
+  "changelogDate": "20250703090721",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "nft_level",
+  "fields": [
+    {
+      "fieldName": "niveau",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "seuilLocation",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "tauxFrais",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "NFTLevel",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

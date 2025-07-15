@@ -1,0 +1,62 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="rentalContract">
+      <h2 data-cy="rentalContractDetailsHeading"><span>Rental Contract</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ rentalContract.id }}</span>
+        </dd>
+        <dt><span>Date Debut</span></dt>
+        <dd>
+          <span>{{ rentalContract.dateDebut | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Date Fin</span></dt>
+        <dd>
+          <span>{{ rentalContract.dateFin | formatMediumDatetime }}</span>
+        </dd>
+        <dt><span>Statut</span></dt>
+        <dd>
+          <span>{{ rentalContract.statut }}</span>
+        </dd>
+        <dt><span>Frais Appliques</span></dt>
+        <dd>
+          <span>{{ rentalContract.fraisAppliques }}</span>
+        </dd>
+        <dt><span>Vehicle</span></dt>
+        <dd>
+          <div *ngIf="rentalContract.vehicle">
+            <a [routerLink]="['/vehicle', rentalContract.vehicle?.id, 'view']">{{ rentalContract.vehicle?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Locataire</span></dt>
+        <dd>
+          <div *ngIf="rentalContract.locataire">
+            <a [routerLink]="['/user-extended', rentalContract.locataire?.id, 'view']">{{ rentalContract.locataire?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Loueur</span></dt>
+        <dd>
+          <div *ngIf="rentalContract.loueur">
+            <a [routerLink]="['/user-extended', rentalContract.loueur?.id, 'view']">{{ rentalContract.loueur?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/rental-contract', rentalContract.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

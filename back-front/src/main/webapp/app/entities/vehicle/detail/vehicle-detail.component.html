@@ -1,0 +1,54 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="vehicle">
+      <h2 data-cy="vehicleDetailsHeading"><span>Vehicle</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ vehicle.id }}</span>
+        </dd>
+        <dt><span>Marque</span></dt>
+        <dd>
+          <span>{{ vehicle.marque }}</span>
+        </dd>
+        <dt><span>Modele</span></dt>
+        <dd>
+          <span>{{ vehicle.modele }}</span>
+        </dd>
+        <dt><span>Description</span></dt>
+        <dd>
+          <span>{{ vehicle.description }}</span>
+        </dd>
+        <dt><span>Tarif Journalier</span></dt>
+        <dd>
+          <span>{{ vehicle.tarifJournalier }}</span>
+        </dd>
+        <dt><span>Disponible</span></dt>
+        <dd>
+          <span>{{ vehicle.disponible }}</span>
+        </dd>
+        <dt><span>Loueur</span></dt>
+        <dd>
+          <div *ngIf="vehicle.loueur">
+            <a [routerLink]="['/user-extended', vehicle.loueur?.id, 'view']">{{ vehicle.loueur?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/vehicle', vehicle.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifier le vehicule</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-vehicle-heading" data-cy="VehicleCreateUpdateHeading">Créer ou modifier un véhicule</h2>
+
+
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" [hidden]="editForm.get('id')!.value == null">
+          <label class="form-label" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_marque">Marque</label>
+          <input type="text" class="form-control" name="marque" id="field_marque" data-cy="marque" formControlName="marque" />
+          <div *ngIf="editForm.get('marque')!.invalid && (editForm.get('marque')!.dirty || editForm.get('marque')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('marque')?.errors?.required">Obligatoire. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_modele">Modele</label>
+          <input type="text" class="form-control" name="modele" id="field_modele" data-cy="modele" formControlName="modele" />
+          <div *ngIf="editForm.get('modele')!.invalid && (editForm.get('modele')!.dirty || editForm.get('modele')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('modele')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_description">Description</label>
+          <input
+            type="text"
+            class="form-control"
+            name="description"
+            id="field_description"
+            data-cy="description"
+            formControlName="description"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_tarifJournalier">Tarif Journalier</label>
+          <input
+            type="number"
+            class="form-control"
+            name="tarifJournalier"
+            id="field_tarifJournalier"
+            data-cy="tarifJournalier"
+            formControlName="tarifJournalier"
+          />
+          <div
+            *ngIf="
+              editForm.get('tarifJournalier')!.invalid &&
+              (editForm.get('tarifJournalier')!.dirty || editForm.get('tarifJournalier')!.touched)
+            "
+          >
+            <small class="form-text text-danger" *ngIf="editForm.get('tarifJournalier')?.errors?.required"> This field is required. </small>
+            <small class="form-text text-danger" [hidden]="!editForm.get('tarifJournalier')?.errors?.number">
+              This field should be a number.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_disponible">Disponible</label>
+          <input
+            type="checkbox"
+            class="form-check"
+            name="disponible"
+            id="field_disponible"
+            data-cy="disponible"
+            formControlName="disponible"
+          />
+          <div *ngIf="editForm.get('disponible')!.invalid && (editForm.get('disponible')!.dirty || editForm.get('disponible')!.touched)">
+            <small class="form-text text-danger" *ngIf="editForm.get('disponible')?.errors?.required"> This field is required. </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" for="field_loueur">Loueur</label>
+          <select class="form-control" id="field_loueur" data-cy="loueur" name="loueur" formControlName="loueur">
+            <option [ngValue]="null"></option>
+            <option
+              [ngValue]="userExtendedOption.id === editForm.get('loueur')!.value?.id ? editForm.get('loueur')!.value : userExtendedOption"
+              *ngFor="let userExtendedOption of userExtendedsSharedCollection; trackBy: trackUserExtendedById"
+            >
+              {{ userExtendedOption.id }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span>Quitter</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span>Enregistrer</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

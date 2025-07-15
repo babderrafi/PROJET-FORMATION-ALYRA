@@ -1,0 +1,73 @@
+<div>
+  <h2 id="page-heading" data-cy="FeePoolHeading" class="d-flex justify-content-between align-items-center">
+    <span>
+      Frais collectés
+      <fa-icon icon="info-circle" placement="top" ngbTooltip="Frais prélevés sur chaque contrat selon le niveau NFT, redistribués depuis la piscine."></fa-icon>
+    </span>
+
+    <div>
+      <button class="btn btn-success me-2" (click)="simulateRedistribution()" [disabled]="isSimulating">
+        <fa-icon icon="retweet" [spin]="isSimulating"></fa-icon>
+        <span>Simuler Redistribution</span>
+      </button>
+
+      <button class="btn btn-outline-secondary me-2" (click)="requestFinancialReport()">
+        <fa-icon icon="file-alt"></fa-icon>
+        <span>Demande de Rapport Financier</span>
+      </button>
+
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Rafraîchir la liste</span>
+      </button>
+
+      <button
+        class="btn btn-primary"
+        id="jh-create-entity"
+        [routerLink]="['/fee-pool/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span>Créer</span>
+      </button>
+    </div>
+  </h2>
+
+  <div *ngIf="feePools?.length === 0" class="alert alert-warning">Aucun frais collecté pour le moment.</div>
+
+  <div *ngIf="feePools && feePools.length > 0" class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Montant Collecté</th>
+        <th>Montant Redistribué</th>
+        <th>% Redistribué</th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let feePool of feePools; trackBy: trackId">
+        <td><a [routerLink]="['/fee-pool', feePool.id, 'view']">{{ feePool.id }}</a></td>
+        <td>{{ feePool.montantCollecte }} ETH</td>
+        <td>{{ feePool.montantRedistribue }} ETH</td>
+        <td>
+          {{ calculatePercentage(feePool.montantRedistribue, feePool.montantCollecte) }}%
+        </td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button class="btn btn-info btn-sm" [routerLink]="['/fee-pool', feePool.id, 'view']">
+              <fa-icon icon="eye"></fa-icon> <span class="d-none d-md-inline">Voir</span>
+            </button>
+            <button class="btn btn-primary btn-sm" [routerLink]="['/fee-pool', feePool.id, 'edit']">
+              <fa-icon icon="pencil-alt"></fa-icon> <span class="d-none d-md-inline">Éditer</span>
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="delete(feePool)">
+              <fa-icon icon="times"></fa-icon> <span class="d-none d-md-inline">Supprimer</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

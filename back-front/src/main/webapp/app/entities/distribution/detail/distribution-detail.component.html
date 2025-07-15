@@ -1,0 +1,48 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="distribution">
+      <h2 data-cy="distributionDetailsHeading"><span>Distribution</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ distribution.id }}</span>
+        </dd>
+        <dt><span>Amount Usdc</span></dt>
+        <dd>
+          <span>{{ distribution.amountUsdc }}</span>
+        </dd>
+        <dt><span>Status</span></dt>
+        <dd>
+          <span>{{ distribution.status }}</span>
+        </dd>
+        <dt><span>Revenue</span></dt>
+        <dd>
+          <div *ngIf="distribution.revenue">
+            <a [routerLink]="['/revenue', distribution.revenue?.id, 'view']">{{ distribution.revenue?.id }}</a>
+          </div>
+        </dd>
+        <dt><span>Part</span></dt>
+        <dd>
+          <div *ngIf="distribution.part">
+            <a [routerLink]="['/part', distribution.part?.id, 'view']">{{ distribution.part?.id }}</a>
+          </div>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/distribution', distribution.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

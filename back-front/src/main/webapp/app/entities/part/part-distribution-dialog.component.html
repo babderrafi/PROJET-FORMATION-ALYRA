@@ -1,0 +1,43 @@
+<div class="modal-header bg-light border-bottom">
+  <h4 class="modal-title fw-bold">
+    Répartition des parts – <span class="text-primary">{{ car.name }}</span>
+  </h4>
+  <button type="button" class="btn-close" aria-label="Fermer" (click)="activeModal.dismiss()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="alert alert-info small mb-3">
+    Cette répartition est basée sur une logique de <strong>dApp</strong> décentralisée :
+    chaque wallet détient un pourcentage explicite des parts liées à ce véhicule.
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle text-center">
+      <thead class="table-light">
+      <tr>
+        <th><i class="bi bi-wallet2"></i> Wallet Propriétaire</th>
+        <th><i class="bi bi-pie-chart-fill"></i> Pourcentage</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let part of parts">
+        <!-- Utilisation de la fonction maskAddress pour masquer proprement -->
+        <td class="text-break">
+            <span class="badge bg-secondary px-3 py-2">
+              {{ maskAddress(part.ownerWallet) }}
+            </span>
+        </td>
+        <td><strong>{{ part.percentage }}%</strong></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="parts.length === 0" class="alert alert-warning text-center mt-3">
+    Aucune part n’a encore été attribuée à cette voiture.
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="activeModal.close()">Fermer</button>
+</div>

@@ -1,0 +1,28 @@
+[
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "niveau", "type": "uint256" },
+      { "internalType": "uint256", "name": "taux", "type": "uint256" }
+    ],
+    "name": "setFraisParNiveau",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "niveau", "type": "uint256" }],
+    "name": "getFraisParNiveau",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "niveau", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "nouveauTaux", "type": "uint256" }
+    ],
+    "name": "FraisMisAJour",
+    "type": "event"
+  }
+]

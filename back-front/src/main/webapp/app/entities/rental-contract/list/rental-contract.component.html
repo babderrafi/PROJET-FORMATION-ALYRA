@@ -1,0 +1,191 @@
+<div>
+  <h2 id="page-heading" data-cy="RentalContractHeading">
+    <span>Contrats de location</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadPage()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Refresh List</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-rental-contract"
+        [routerLink]="['/rental-contract/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Créer un nouveau contrat de location </span>
+      </button>
+    </div>
+  </h2>
+
+
+
+
+  <jhi-alert-error></jhi-alert-error>
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="rentalContracts?.length === 0">
+    <span>Aucun contrat de location trouvé</span>
+  </div>
+
+  <div class="table-responsive" id="entities" *ngIf="rentalContracts && rentalContracts.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="loadPage()">
+        <th scope="col" jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="dateDebut"><span>Date Début</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="dateFin"><span>Date Fin</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="statut"><span>Statut</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="vehicle.id"><span>Véhicule</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="vehicle.id"><span>Montant location (ETH)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="locataire.id"><span>Locataire (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="loueur.id"><span>Loueur (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let rentalContract of rentalContracts; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/rental-contract', rentalContract.id, 'view']">{{ rentalContract.id }}</a>
+        </td>
+        <td>{{ rentalContract.dateDebut | formatMediumDatetime }}</td>
+        <td>{{ rentalContract.dateFin | formatMediumDatetime }}</td>
+        <td>{{ rentalContract.statut }}</td>
+        <td>
+          <a *ngIf="rentalContract.vehicle" [routerLink]="['/vehicle', rentalContract.vehicle?.id, 'view']">
+            {{ rentalContract.vehicle?.id }}
+          </a>
+        </td>
+        <td>{{ rentalContract.fraisAppliques }}</td>
+        <td>
+          {{ formatEthAddress(rentalContract.locataire?.ethereumAddress) }}
+        </td>
+        <td>
+          {{ formatEthAddress(rentalContract.loueur?.ethereumAddress) }}
+        </td>
+
+        <td class="text-end" style="position: relative;">
+          <div ngbDropdown placement="bottom-end" class="btn-group">
+            <button class="btn btn-outline-dark btn-sm" ngbDropdownToggle>
+              <fa-icon icon="ellipsis-v"></fa-icon>
+            </button>
+            <div ngbDropdownMenu class="shadow-sm border-0 p-1 dropdown-menu-end">
+              <button class="dropdown-item small" (click)="ouvrirPopup('signer', rentalContract)">
+                <fa-icon icon="pen-nib" class="me-1 text-warning"></fa-icon>Signer
+              </button>
+              <button class="dropdown-item small" (click)="ouvrirPopup('terminer', rentalContract)">
+                <fa-icon icon="flag-checkered" class="me-1 text-danger"></fa-icon>Terminer
+              </button>
+              <button class="dropdown-item small" (click)="ouvrirPopup('voir-frais', rentalContract)">
+                <fa-icon icon="info-circle" class="me-1 text-info"></fa-icon>Voir frais
+              </button>
+              <a [routerLink]="['/rental-contract', rentalContract.id, 'view']" class="dropdown-item small">
+                <fa-icon icon="eye" class="me-1 text-primary"></fa-icon>Voir
+              </a>
+              <a [routerLink]="['/rental-contract', rentalContract.id, 'edit']" class="dropdown-item small">
+                <fa-icon icon="edit" class="me-1 text-success"></fa-icon>Modifier
+              </a>
+              <button class="dropdown-item small text-danger" (click)="delete(rentalContract)">
+                <fa-icon icon="trash"></fa-icon> Supprimer
+              </button>
+            </div>
+          </div>
+        </td>
+
+
+
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="rentalContracts && rentalContracts.length > 0">
+    <div class="d-flex justify-content-center">
+      <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <ngb-pagination
+        [collectionSize]="totalItems"
+        [(page)]="ngbPaginationPage"
+        [pageSize]="itemsPerPage"
+        [maxSize]="5"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="loadPage($event)"
+      ></ngb-pagination>
+    </div>
+
+
+    <!-- Modal Frais -->
+    <div class="modal fade" id="fraisModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Détails des frais</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p><strong>ID contrat :</strong> {{ selectedContract?.id }}</p>
+            <p><strong>Niveau NFT locataire :</strong> {{ niveauLocataire }}</p>
+            <p>
+              <strong>Dates :</strong>
+              {{ selectedContract?.dateDebut?.toDate() | date: 'short' }} ==>
+              {{ selectedContract?.dateFin?.toDate() | date: 'short' }}
+             </p>
+            <p><strong>Montant de base :</strong> {{ selectedContract?.fraisAppliques }} wei</p>
+            <p><strong>Frais calculés :</strong> {{ fraisCalcules }} wei</p>
+            <p><i>(Calcul basé sur le smart contract FeeCalculator)</i></p>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="modal fade" id="signerModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Signature du contrat</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            Confirmer la signature du contrat ID #{{ selectedContract?.id }} ?
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button class="btn btn-success" (click)="confirmerSignature()">Signer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="terminerModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Terminaison du contrat</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            Confirmer la terminaison du contrat ID #{{ selectedContract?.id }} ?
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button class="btn btn-danger" (click)="confirmerTerminaison()">Terminer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+</div>

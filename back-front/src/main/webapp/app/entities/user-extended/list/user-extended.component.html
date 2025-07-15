@@ -1,0 +1,148 @@
+<div>
+  <h2 id="page-heading" data-cy="UserExtendedHeading">
+    <span>Utilisateurs étendus</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="loadAll()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span>Rafraîchir la liste</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-user-extended"
+        [routerLink]="['/user-extended/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span> Créer un nouvel utilisateur étendu </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="userExtendeds?.length === 0">
+    <span>	Aucun utilisateur étendu trouvé</span>
+  </div>
+  <div class="alert mt-2" [ngClass]="isAdminConnected ? 'alert-success' : 'alert-danger'">
+    <strong>Admin :</strong>
+    <span *ngIf="isAdminConnected">{{ getMaskedAddress(adminAddress) }} connecté</span>
+    <span *ngIf="!isAdminConnected">Non connecté</span>
+  </div>
+
+
+  <div class="table-responsive" id="entities" *ngIf="userExtendeds && userExtendeds.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+      <tr>
+        <th scope="col"><span>ID</span></th>
+        <th scope="col"><span>Role</span></th>
+        <th scope="col"><span>Ethereum Address</span></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let userExtended of userExtendeds; trackBy: trackId" data-cy="entityTable">
+        <td>
+          <a [routerLink]="['/user-extended', userExtended.id, 'view']">{{ userExtended.id }}</a>
+        </td>
+        <td>{{ userExtended.role }}</td>
+        <td>{{ getMaskedAddress(userExtended.ethereumAddress) }}</td>
+        <td class="text-end">
+          <div class="btn-group">
+            <button class="btn btn-secondary btn-sm" (click)="voirNiveauNFT(userExtended.ethereumAddress!)">
+              <fa-icon icon="award"></fa-icon> Niveau NFT
+            </button>
+
+            <button *ngIf="isAdminConnected" class="btn btn-success btn-sm"
+                    (click)="attribuerNFT(userExtended.ethereumAddress!, userExtended)">
+              <fa-icon icon="plus"></fa-icon> Attribuer NFT
+            </button>
+
+
+
+            <button
+              type="submit"
+              [routerLink]="['/user-extended', userExtended.id, 'view']"
+              class="btn btn-info btn-sm"
+              data-cy="entityDetailsButton"
+            >
+              <fa-icon icon="eye"></fa-icon>
+              <span class="d-none d-md-inline">Consulter utilisateur</span>
+            </button>
+
+            <button
+              type="submit"
+              [routerLink]="['/user-extended', userExtended.id, 'edit']"
+              class="btn btn-primary btn-sm"
+              data-cy="entityEditButton"
+            >
+              <fa-icon icon="pencil-alt"></fa-icon>
+              <span class="d-none d-md-inline">Modifier utilisateur</span>
+            </button>
+
+            <button type="submit" (click)="delete(userExtended)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <fa-icon icon="times"></fa-icon>
+              <span class="d-none d-md-inline">Supprimer utilisateur</span>
+            </button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="nftLevelModal" tabindex="-1" aria-labelledby="nftLevelModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Niveau NFT</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Adresse Ethereum :</strong> {{ getMaskedAddress(currentAddress) }}</p>
+        <p>
+          <strong>Niveau actuel :</strong>
+          <span [ngClass]="getNiveauBadgeClass(selectedNftLevel)">
+    {{ getNiveauLabel(selectedNftLevel) }} (id {{ selectedNftLevel }})
+  </span>
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="attribuerNftModal" tabindex="-1" aria-labelledby="attribuerNftModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Attribuer un NFT</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Adresse Ethereum :</strong>  {{ getMaskedAddress(currentAddress) }}</p>
+        <div class="mb-3">
+          <label for="nftLevelSelect" class="form-label">Niveau à attribuer</label>
+          <select id="nftLevelSelect" class="form-select" [(ngModel)]="selectedNftLevel">
+            <option [ngValue]="0">Bronze</option>
+            <option [ngValue]="1">Argent</option>
+            <option [ngValue]="2">Or</option>
+            <option [ngValue]="3">Platine</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="confirmerAttributionNFT()">Attribuer</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

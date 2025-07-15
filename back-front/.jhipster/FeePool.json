@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20250703090722",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "fee_pool",
+  "fields": [
+    {
+      "fieldName": "montantCollecte",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "montantRedistribue",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "FeePool",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceClass"
+}

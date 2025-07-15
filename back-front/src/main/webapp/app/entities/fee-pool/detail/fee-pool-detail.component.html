@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="feePool">
+      <h2 data-cy="feePoolDetailsHeading"><span>Résérves de frais</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span>ID</span></dt>
+        <dd>
+          <span>{{ feePool.id }}</span>
+        </dd>
+        <dt><span>Montant Collecte</span></dt>
+        <dd>
+          <span>{{ feePool.montantCollecte }}</span>
+        </dd>
+        <dt><span>Montant Redistribue</span></dt>
+        <dd>
+          <span>{{ feePool.montantRedistribue }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Retour</span>
+      </button>
+
+      <button type="button" [routerLink]="['/fee-pool', feePool.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Modifier</span>
+      </button>
+    </div>
+  </div>
+</div>
