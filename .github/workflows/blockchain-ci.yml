@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'blockchain/**'
+  workflow_dispatch:  # Permet de lancer manuellement depuis GitHub
 
 jobs:
   build:
@@ -15,10 +16,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '18'
 
       - name: Install dependencies
         run: cd blockchain && npm install
 
       - name: Compile smart contracts
         run: cd blockchain && npx hardhat compile
+
