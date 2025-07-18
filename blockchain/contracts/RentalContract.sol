@@ -40,7 +40,7 @@ contract RentalContract {
     FeeCalculator public feeCalculator;
 
     /// @notice Events pour le suivi des états
-    event ContratCree(uint256 id, address locataire, address loueur);
+    event ContratCree(uint256 indexed id, address locataire, address loueur);
     event ContratSigne(uint256 id);
     event ContratTermine(uint256 id);
 
