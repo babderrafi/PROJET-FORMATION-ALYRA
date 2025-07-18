@@ -34,6 +34,12 @@ jobs:
       - name: Compile smart contracts
         run: npx hardhat compile
 
-      - name: Deploy to Sepolia
-        run: npx hardhat run scripts/deploy.js --network sepolia
+      - name: Deploy NFT Contract
+        run: npx hardhat run scripts/deployNFT.js --network sepolia
+
+      - name: Deploy Rental Contract
+        run: npx hardhat run scripts/deployRentalContract.js --network sepolia
+
+      - name: Deploy Fee Calculator
+        run: npx hardhat run scripts/deployFeeCalculator.js --network sepolia
 
