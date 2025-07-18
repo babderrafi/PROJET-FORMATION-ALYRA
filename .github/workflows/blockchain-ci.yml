@@ -25,7 +25,7 @@ jobs:
 
       - name: Inject secrets into environment
         run: |
-          echo "SEPOLIA_URL=${{ secrets.SEPOLIA_URL }}" >> $GITHUB_ENV
+          echo "SEPOLIA_RPC_URL=${{ secrets.SEPOLIA_URL }}" >> $GITHUB_ENV
           echo "PRIVATE_KEY=${{ secrets.PRIVATE_KEY }}" >> $GITHUB_ENV
 
       - name: Install dependencies
