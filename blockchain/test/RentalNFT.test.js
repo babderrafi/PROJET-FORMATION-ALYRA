@@ -46,10 +46,11 @@ const initialURI = "https://gateway.pinata.cloud/ipfs/bafybeia774myuwismh6664smq
     expect(await rentalNFT.hasLevel(addr1.address, 2)).to.be.false;
   });
 
-  it("should return highest level from getLevel", async function () {
+  it("should return last level from getLevel", async function () {
     await rentalNFT.mint(addr1.address, 1); 
     await rentalNFT.mint(addr1.address, 3); 
-    expect(await rentalNFT.getLevel(addr1.address)).to.equal(3); 
+      await rentalNFT.mint(addr1.address, 2); 
+    expect(await rentalNFT.getLevel(addr1.address)).to.equal(2); 
   });
 
   it("should allow owner to update URI", async function () {
@@ -58,7 +59,7 @@ const initialURI = "https://gateway.pinata.cloud/ipfs/bafybeia774myuwismh6664smq
       .to.emit(rentalNFT, "URIUpdated")
       .withArgs(newURI);
   });
-  
+
   it("should revert if non-owner tries to set URI", async function () {
   let failed = false;
   try {
