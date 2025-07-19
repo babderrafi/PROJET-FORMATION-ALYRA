@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 
-const CONTRACT_ADDRESS = '0x54177B172D43e0be74f1a6587744076CDB8a387C';
+const CONTRACT_ADDRESS = '0x679d02c4779c0a6DEf956978c0C9C0Ed78E3fD16';
 
 const ABI: AbiItem[] = [
   {
@@ -65,6 +65,8 @@ export class NftService {
     const level: string = await this.contract.methods.getLevel(address).call();
     return parseInt(level, 10);
   }
+
+
 
   getHasLevel(address: string, levelId: number): Promise<boolean> {
     return this.contract.methods.hasLevel(address, levelId).call() as Promise<boolean>;
