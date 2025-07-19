@@ -31,11 +31,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-       - name: Install dependencies
-        run: npm install
-
-      - name: test smart contracts
-        run: npx hardhat compile
+      - name: Test smart contracts
+        run: npx hardhat test
 
       - name: Deploy NFT Contract
         run: npx hardhat run scripts/deployNFT.js --network sepolia
