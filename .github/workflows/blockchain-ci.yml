@@ -31,7 +31,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Compile smart contracts
+       - name: Install dependencies
+        run: npm install
+
+      - name: test smart contracts
         run: npx hardhat compile
 
       - name: Deploy NFT Contract
@@ -42,4 +45,3 @@ jobs:
 
       - name: Deploy Fee Calculator
         run: npx hardhat run scripts/deployFeeCalculator.js --network sepolia
-
