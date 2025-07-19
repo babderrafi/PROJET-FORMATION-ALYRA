@@ -7,7 +7,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract FeeCalculator is Ownable {
     RentalNFT public rentalNFT;
 
-    // Taux en pourcentages, par exemple 15 = 15%
     mapping(uint256 => uint256) public fraisParNiveau;
 
     event FraisMisAJour(uint256 niveau, uint256 nouveauTaux);
@@ -15,11 +14,10 @@ contract FeeCalculator is Ownable {
     constructor(address _rentalNFT) Ownable(msg.sender) {
         rentalNFT = RentalNFT(_rentalNFT);
 
-        // Valeurs par défaut
-        fraisParNiveau[0] = 15; // Bronze
-        fraisParNiveau[1] = 10; // Argent
-        fraisParNiveau[2] = 5;  // Or
-        fraisParNiveau[3] = 2;  // Platine
+        fraisParNiveau[0] = 15; 
+        fraisParNiveau[1] = 10; 
+        fraisParNiveau[2] = 5;  
+        fraisParNiveau[3] = 2; 
     }
 
     function setFraisParNiveau(uint256 niveau, uint256 taux) external
@@ -38,8 +36,6 @@ onlyOwner {
 external view returns (uint256) {
         uint256 niveau = rentalNFT.getLevel(locataire);
         uint256 taux = fraisParNiveau[niveau];
-
-        // Exemple : 10% sur 1 ETH = 0.1 ETH
         return (montantBase * taux) / 100;
     }
 }
