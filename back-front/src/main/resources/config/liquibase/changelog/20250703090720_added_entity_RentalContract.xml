@@ -26,6 +26,9 @@
             <column name="frais_appliques" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
+            <column name="id_bc" type="decimal(21,2)">
+                <constraints nullable="false" />
+            </column>
             <column name="vehicle_id" type="bigint">
                 <constraints nullable="true" />
             </column>

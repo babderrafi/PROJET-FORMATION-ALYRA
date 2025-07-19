@@ -40,6 +40,11 @@ public class RentalContract implements Serializable {
     @Column(name = "frais_appliques", precision = 21, scale = 2, nullable = false)
     private BigDecimal fraisAppliques;
 
+    @NotNull
+    @Column(name = "id_bc", precision = 21, scale = 2, nullable = false)
+    private BigDecimal idBc;
+
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "loueur" }, allowSetters = true)
     private Vehicle vehicle;
@@ -158,7 +163,14 @@ public class RentalContract implements Serializable {
         return this;
     }
 
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
+    public BigDecimal getIdBc() {
+        return idBc;
+    }
+
+    public void setIdBc(BigDecimal idBc) {
+        this.idBc = idBc;
+    }
+// jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
     public boolean equals(Object o) {

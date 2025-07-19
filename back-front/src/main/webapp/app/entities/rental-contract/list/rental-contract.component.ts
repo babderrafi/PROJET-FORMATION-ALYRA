@@ -105,30 +105,43 @@ export class RentalContractComponent implements OnInit {
       return;
     }
 
-    const contratId = this.selectedContract.id;
+    const contratId = this.selectedContract.idBc;
+    const locataireAttendu = this.selectedContract.locataire?.ethereumAddress;
 
     this.rentalSmartService.getCurrentAccount()
       .then(account => {
-        if (account.toLowerCase() !== this.selectedContract?.locataire?.ethereumAddress?.toLowerCase()) {
-          alert("Seul le locataire peut signer ce contrat.");
+        if (!locataireAttendu) {
+          alert("Adresse du locataire introuvable.");
+          return;
+        }
+
+        if (account.toLowerCase() !== locataireAttendu.toLowerCase()) {
+          alert(`Adresse connectée (${account}) différente du locataire attendu (${locataireAttendu}).\nVeuillez changer de compte dans MetaMask.`);
           return;
         }
 
         return this.rentalSmartService.signerContrat(contratId, account);
       })
       .then(() => {
-        alert('Contrat signé avec succès');
-        this.loadPage(); // Recharger la liste
-        bootstrap.Modal.getInstance(document.getElementById('signerModal'))?.hide();
-      })
-      .catch(error => {
-        if (error) {
-          console.error('Erreur lors de la signature :', error);
-          alert('Erreur lors de la signature du contrat.');
+        if (this.selectedContract) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          this.selectedContract.statut = 'SIGNE'; // ou la valeur correcte attendue par le backend
+          this.rentalContractService.update(this.selectedContract).subscribe({
+            next: () => {
+              alert('Contrat signé avec succès');
+              this.loadPage(); // Rafraîchir la liste
+              bootstrap.Modal.getInstance(document.getElementById('signerModal'))?.hide();
+            },
+            error(err) {
+              console.error('Erreur lors de la mise à jour en BDD :', err);
+              alert('La signature a été effectuée sur la blockchain, mais la mise à jour en base a échoué.');
+            }
+          });
         }
-      });
-  }
+      })
 
+  }
 
 
   confirmerTerminaison(): void {
@@ -171,6 +184,10 @@ export class RentalContractComponent implements OnInit {
       }
     });
   }
+
+
+
+
   formatEthAddress(address?: string): string {
     if (!address) {
       return 'Non défini';

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
-
+import { RentalSmartService } from 'app/rental-contract/rental-smart.service';
 import dayjs from 'dayjs/esm';
 import { DATE_TIME_FORMAT } from 'app/config/input.constants';
 
@@ -33,12 +33,14 @@ export class RentalContractUpdateComponent implements OnInit {
     dateFin: [null, [Validators.required]],
     statut: [null, [Validators.required]],
     fraisAppliques: [null, [Validators.required]],
-    vehicle: [],
-    locataire: [],
-    loueur: [],
+    vehicle: [null, Validators.required],
+    locataire: [null, Validators.required],
+    loueur: [null, Validators.required],
   });
 
   constructor(
+    protected router: Router,
+    protected rentalSmartService: RentalSmartService,
     protected rentalContractService: RentalContractService,
     protected vehicleService: VehicleService,
     protected userExtendedService: UserExtendedService,
@@ -55,7 +57,6 @@ export class RentalContractUpdateComponent implements OnInit {
       }
 
       this.updateForm(rentalContract);
-
       this.loadRelationshipsOptions();
     });
   }
@@ -67,12 +68,44 @@ export class RentalContractUpdateComponent implements OnInit {
   save(): void {
     this.isSaving = true;
     const rentalContract = this.createFromForm();
-    if (rentalContract.id !== undefined) {
-      this.subscribeToSaveResponse(this.rentalContractService.update(rentalContract));
-    } else {
-      this.subscribeToSaveResponse(this.rentalContractService.create(rentalContract));
-    }
+
+    rentalContract.vehicle = rentalContract.vehicle ? { id: rentalContract.vehicle.id } : null;
+    rentalContract.locataire = rentalContract.locataire ? { id: rentalContract.locataire.id } : null;
+    rentalContract.loueur = rentalContract.loueur ? { id: rentalContract.loueur.id } : null;
+
+    this.rentalSmartService.getCurrentAccount().then(account => {
+      const locataireAddress = this.editForm.get('locataire')!.value?.ethereumAddress;
+      const loueurAddress = this.editForm.get('loueur')!.value?.ethereumAddress;
+      const vehicleId = this.editForm.get('vehicle')!.value?.id;
+      const montant = this.editForm.get('fraisAppliques')!.value;
+      const dateDebut = Math.floor(dayjs(this.editForm.get('dateDebut')!.value, DATE_TIME_FORMAT).toDate().getTime() / 1000);
+      const dateFin = Math.floor(dayjs(this.editForm.get('dateFin')!.value, DATE_TIME_FORMAT).toDate().getTime() / 1000);
+
+      if (!locataireAddress || !loueurAddress || !vehicleId || !montant) {
+        throw new Error('Champs requis manquants pour la création blockchain');
+      }
+
+      return this.rentalSmartService.createContract(
+        locataireAddress,
+        loueurAddress,
+        vehicleId,
+        dateDebut,
+        dateFin,
+        montant,
+        account
+      );
+    })
+      .then((idBlockchain: number) => {
+        rentalContract.idBc = idBlockchain;
+        this.subscribeToSaveResponse(this.rentalContractService.create(rentalContract));
+      })
+      .catch(error => {
+        this.isSaving = false;
+        alert('Erreur lors de la création du contrat sur la blockchain ou l\'API.');
+      });
   }
+
+
 
   trackVehicleById(index: number, item: IVehicle): number {
     return item.id!;
@@ -85,16 +118,15 @@ export class RentalContractUpdateComponent implements OnInit {
   protected subscribeToSaveResponse(result: Observable<HttpResponse<IRentalContract>>): void {
     result.pipe(finalize(() => this.onSaveFinalize())).subscribe({
       next: () => this.onSaveSuccess(),
-      error: () => this.onSaveError(),
+      error: err => {
+        this.isSaving = false;
+        alert('Erreur lors de l\'enregistrement dans la base de données.');
+      },
     });
   }
 
   protected onSaveSuccess(): void {
     this.previousState();
-  }
-
-  protected onSaveError(): void {
-    // Api for inheritance.
   }
 
   protected onSaveFinalize(): void {

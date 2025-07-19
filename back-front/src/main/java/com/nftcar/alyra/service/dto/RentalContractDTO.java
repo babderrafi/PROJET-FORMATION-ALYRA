@@ -26,6 +26,8 @@ public class RentalContractDTO implements Serializable {
     @NotNull
     private BigDecimal fraisAppliques;
 
+    private BigDecimal idBc;
+
     private VehicleDTO vehicle;
 
     private UserExtendedDTO locataire;
@@ -94,6 +96,15 @@ public class RentalContractDTO implements Serializable {
 
     public void setLoueur(UserExtendedDTO loueur) {
         this.loueur = loueur;
+    }
+
+
+    public BigDecimal getIdBc() {
+        return idBc;
+    }
+
+    public void setIdBc(BigDecimal idBc) {
+        this.idBc = idBc;
     }
 
     @Override

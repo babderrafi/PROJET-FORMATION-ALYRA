@@ -39,7 +39,8 @@
         <th scope="col" jhiSortBy="dateFin"><span>Date Fin</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="statut"><span>Statut</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="vehicle.id"><span>Véhicule</span> <fa-icon icon="sort"></fa-icon></th>
-        <th scope="col" jhiSortBy="vehicle.id"><span>Montant location (ETH)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="vehicle.id"><span>Montant location (Wei)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" ><span>ID BC</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="locataire.id"><span>Locataire (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="loueur.id"><span>Loueur (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col"></th>
@@ -59,6 +60,7 @@
           </a>
         </td>
         <td>{{ rentalContract.fraisAppliques }}</td>
+        <td>{{ rentalContract.idBc }}</td>
         <td>
           {{ formatEthAddress(rentalContract.locataire?.ethereumAddress) }}
         </td>

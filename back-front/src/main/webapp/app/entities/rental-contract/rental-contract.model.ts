@@ -10,6 +10,7 @@ export interface IRentalContract {
   statut?: StatutContrat;
   fraisAppliques?: number;
   montantTotal?: number;
+  idBc?: number;
   vehicle?: IVehicle | null;
   locataire?: IUserExtended | null;
   loueur?: IUserExtended | null;
@@ -23,6 +24,7 @@ export class RentalContract implements IRentalContract {
     public statut?: StatutContrat,
     public fraisAppliques?: number,
     public montantTotal?: number,
+    public idBc?: number,
     public vehicle?: IVehicle | null,
     public locataire?: IUserExtended | null,
     public loueur?: IUserExtended | null
