@@ -1,7 +1,7 @@
 const hre = require("hardhat");
 
 async function main() {
-  const rentalNFTAddress = "0x54177B172D43e0be74f1a6587744076CDB8a387C";
+  const rentalNFTAddress = "0xF84A8CfE750E07840CB2245D23F695c4db22e921";
 
   const FeeCalculator = await hre.ethers.getContractFactory("FeeCalculator");
   const feeCalc = await FeeCalculator.deploy(rentalNFTAddress);

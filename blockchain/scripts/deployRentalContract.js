@@ -2,8 +2,8 @@ const hre = require("hardhat");
 
 async function main() {
   // Remplace ici les adresses déjà déployées
-  const rentalNFTAddress = "0x54177B172D43e0be74f1a6587744076CDB8a387C";      // Adresse du contrat RentalNFT
-  const feeCalculatorAddress = "0x343C65A9Af9091067Cd474eA9F2Ae4E2bE3eBb7B";  // Adresse du contrat FeeCalculator
+  const rentalNFTAddress = "0xF84A8CfE750E07840CB2245D23F695c4db22e921";      // Adresse du contrat RentalNFT
+  const feeCalculatorAddress = "0xEA93273A70413Cc76CA3b9a783b5B3F21886dCc3";  // Adresse du contrat FeeCalculator
 
   const RentalContract = await hre.ethers.getContractFactory("RentalContract");
   const rentalContract = await RentalContract.deploy(rentalNFTAddress, feeCalculatorAddress);
