@@ -2,46 +2,104 @@ import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { Injectable } from '@angular/core';
 
-const CONTRACT_ADDRESS = '0x343C65A9Af9091067Cd474eA9F2Ae4E2bE3eBb7B';
+const CONTRACT_ADDRESS = '0x66c91fD98F3d317737009c8625E36E3c5Debea19';
 const ABI: AbiItem[] = [
   {
-    inputs: [
-      { internalType: 'address', name: 'locataire', type: 'address' },
-      { internalType: 'uint256', name: 'montantBase', type: 'uint256' },
+    "inputs": [
+      { "internalType": "address", "name": "locataire", "type": "address" },
+      { "internalType": "uint256", "name": "montantBase", "type": "uint256" }
     ],
-    name: 'calculerFrais',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "calculerFrais",
+    "outputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
-      { internalType: 'uint256', name: 'niveau', type: 'uint256' },
+    "inputs": [
+      { "internalType": "uint256", "name": "niveau", "type": "uint256" }
     ],
-    name: 'getFraisParNiveau',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
+    "name": "getFraisParNiveau",
+    "outputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   },
   {
-    inputs: [
-      { internalType: 'uint256', name: 'niveau', type: 'uint256' },
-      { internalType: 'uint256', name: 'taux', type: 'uint256' },
+    "inputs": [
+      { "internalType": "uint256", "name": "niveau", "type": "uint256" },
+      { "internalType": "uint256", "name": "taux", "type": "uint256" }
     ],
-    name: 'setFraisParNiveau',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
+    "name": "setFraisParNiveau",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
-    anonymous: false,
-    inputs: [
-      { indexed: false, internalType: 'uint256', name: 'niveau', type: 'uint256' },
-      { indexed: false, internalType: 'uint256', name: 'nouveauTaux', type: 'uint256' },
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      { "internalType": "address", "name": "", "type": "address" }
     ],
-    name: 'FraisMisAJour',
-    type: 'event',
+    "stateMutability": "view",
+    "type": "function"
   },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "rentalNFT",
+    "outputs": [
+      { "internalType": "contract RentalNFT", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "transferOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "name": "fraisParNiveau",
+    "outputs": [
+      { "internalType": "uint256", "name": "", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": false, "internalType": "uint256", "name": "niveau", "type": "uint256" },
+      { "indexed": false, "internalType": "uint256", "name": "nouveauTaux", "type": "uint256" }
+    ],
+    "name": "FraisMisAJour",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      { "indexed": true, "internalType": "address", "name": "previousOwner", "type": "address" },
+      { "indexed": true, "internalType": "address", "name": "newOwner", "type": "address" }
+    ],
+    "name": "OwnershipTransferred",
+    "type": "event"
+  }
 ];
 
 

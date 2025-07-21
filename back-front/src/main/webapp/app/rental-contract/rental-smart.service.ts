@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { AbiItem } from 'web3-utils';
 import { TransactionReceipt } from 'web3-core';
-const CONTRACT_ADDRESS = '0xa6E0549f026f29D2A769B30530eFE51E7ab0797A';
+const CONTRACT_ADDRESS = '0x477E9ef62a9fE006A4f49d54Fef22Baf623011B1';
 const ABI: AbiItem[] =
   [
     {
