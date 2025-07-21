@@ -145,25 +145,45 @@ export class RentalContractComponent implements OnInit {
 
 
   confirmerTerminaison(): void {
-    if (!this.selectedContract || !this.selectedContract.id){
+    if (!this.selectedContract || !this.selectedContract.id) {
       return;
     }
 
     const contratId = this.selectedContract.id;
+    const loueurAttendu = this.selectedContract.loueur?.ethereumAddress;
 
     this.rentalSmartService.getCurrentAccount()
       .then(account => {
-        if (account.toLowerCase() !== this.selectedContract?.loueur?.ethereumAddress?.toLowerCase()) {
-          alert("Seul le loueur peut terminer ce contrat.");
+        if (!loueurAttendu) {
+          alert("Adresse du loueur introuvable.");
           return;
         }
 
-        return this.rentalSmartService.terminerContrat(contratId, account);
+        if (account.toLowerCase() !== loueurAttendu.toLowerCase()) {
+          alert(`Adresse connectée (${account}) différente du loueur attendu (${loueurAttendu}).\nVeuillez changer de compte dans MetaMask.`);
+          return;
+        }
+
+        // Appel avec l'adresse du loueur (attendue)
+        return this.rentalSmartService.terminerContrat(contratId, loueurAttendu);
       })
       .then(() => {
-        alert('Contrat terminé avec succès');
-        this.loadPage();
-        bootstrap.Modal.getInstance(document.getElementById('terminerModal'))?.hide();
+        if (this.selectedContract) {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          this.selectedContract.statut = 'TERMINE'; // ou la valeur correcte attendue par le backend
+          this.rentalContractService.update(this.selectedContract).subscribe({
+            next: () => {
+              alert('Contrat terminé avec succès');
+              this.loadPage();
+              bootstrap.Modal.getInstance(document.getElementById('terminerModal'))?.hide();
+            },
+            error(err) {
+              console.error('Erreur lors de la mise à jour en BDD :', err);
+              alert('La terminaison a été effectuée sur la blockchain, mais la mise à jour en base a échoué.');
+            }
+          });
+        }
       })
       .catch(error => {
         if (error) {
@@ -172,6 +192,7 @@ export class RentalContractComponent implements OnInit {
         }
       });
   }
+
 
 
 

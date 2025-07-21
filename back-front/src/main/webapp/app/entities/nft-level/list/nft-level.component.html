@@ -23,6 +23,8 @@
       <tr>
         <th scope="col">ID</th>
         <th scope="col">Niveau</th>
+        <th scope="col">Libellé</th>
+
         <th scope="col">Taux Frais (%)</th>
         <th scope="col">Seuil de location</th>
         <th scope="col" class="text-end">Actions</th>
@@ -32,6 +34,12 @@
       <tr *ngFor="let lvl of nftLevels">
         <td>{{ lvl.id }}</td>
         <td>{{ lvl.niveau }}</td>
+        <td>
+            <span [ngClass]="getClassForNiveau(lvl.niveau)">
+                  {{ getLibelleForNiveau(lvl.niveau) }}
+            </span>
+        </td>
+
         <td>{{ tauxParNiveau[lvl.niveau] }}</td>
         <td>{{ seuils[lvl.niveau] }}</td>
         <td class="text-end">

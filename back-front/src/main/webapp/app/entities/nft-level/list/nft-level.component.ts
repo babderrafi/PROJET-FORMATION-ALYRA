@@ -39,6 +39,8 @@ export class NFTLevelComponent implements OnInit {
     this.adminAddress = accounts[0];
   }
 
+
+
   async refresh(): Promise<void> {
     this.isLoading = true;
     this.nftLevels = this.creerNiveauxSimules();
@@ -62,6 +64,28 @@ export class NFTLevelComponent implements OnInit {
       { id: 4, niveau: 3 },
     ];
   }
+
+  getLibelleForNiveau(niveau: number): string {
+    switch (niveau) {
+      case 0: return 'Bronze';
+      case 1: return 'Argent';
+      case 2: return 'Or';
+      case 3: return 'Platine';
+      default: return 'Inconnu';
+    }
+  }
+
+  getClassForNiveau(niveau: number): string {
+    switch (niveau) {
+      case 0: return 'text-secondary';  // Gris (Bronze)
+      case 1: return 'text-muted';      // Argent
+      case 2: return 'text-warning';    // Or
+      case 3: return 'text-info';       // Platine
+      default: return '';
+    }
+  }
+
+
 
   openModal(type: 'taux' | 'seuil', niveau: number): void {
     this.modalType = type;

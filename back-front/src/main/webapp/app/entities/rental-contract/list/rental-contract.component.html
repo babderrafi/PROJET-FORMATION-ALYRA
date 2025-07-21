@@ -39,7 +39,7 @@
         <th scope="col" jhiSortBy="dateFin"><span>Date Fin</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="statut"><span>Statut</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="vehicle.id"><span>Véhicule</span> <fa-icon icon="sort"></fa-icon></th>
-        <th scope="col" jhiSortBy="vehicle.id"><span>Montant location (Wei)</span> <fa-icon icon="sort"></fa-icon></th>
+        <th scope="col" jhiSortBy="vehicle.id"><span>Montant location (ETH)</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" ><span>ID BC</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="locataire.id"><span>Locataire (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
         <th scope="col" jhiSortBy="loueur.id"><span>Loueur (Adresse ETH)</span> <fa-icon icon="sort"></fa-icon></th>
@@ -137,8 +137,8 @@
               {{ selectedContract?.dateDebut?.toDate() | date: 'short' }} ==>
               {{ selectedContract?.dateFin?.toDate() | date: 'short' }}
              </p>
-            <p><strong>Montant de base :</strong> {{ selectedContract?.fraisAppliques }} wei</p>
-            <p><strong>Frais calculés :</strong> {{ fraisCalcules }} wei</p>
+            <p><strong>Montant de base :</strong> {{ selectedContract?.fraisAppliques }} ETH</p>
+            <p><strong>Frais calculés :</strong> {{ fraisCalcules }} ETH</p>
             <p><i>(Calcul basé sur le smart contract FeeCalculator)</i></p>
           </div>
           <div class="modal-footer">
