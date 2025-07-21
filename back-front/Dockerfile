@@ -13,4 +13,4 @@ RUN mvn clean install -DskipTests
 EXPOSE 8080
 
 # Lancement de l'application
-CMD ["java", "-jar", "target/*.jar"]
+CMD ["java", "-jar", "target/nftcarapp-0.0.1-SNAPSHOT.jar"]
