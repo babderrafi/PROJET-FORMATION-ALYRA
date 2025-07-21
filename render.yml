@@ -1,14 +1,6 @@
 services:
   - type: web
     name: projet-formation-alyra
-    env: java
+    env: docker
     plan: free
-    buildCommand: ./mvnw clean install -DskipTests
-    startCommand: java -jar target/*.jar
-    buildFilter:
-      paths:
-        - back-front/**
-    envVars:
-      - key: JAVA_VERSION
-        value: 17
-    rootDir: back-front
+    dockerfilePath: back-front/Dockerfile
