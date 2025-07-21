@@ -1,17 +1,16 @@
-# Utilise une image Java avec Maven
 FROM maven:3.9.6-eclipse-temurin-17
 
-# Crée un dossier de travail
+# Va dans le bon dossier
 WORKDIR /app
 
-# Copie le projet dans l'image
+# Copie uniquement le contenu du dossier back-front
 COPY . .
 
-# Compile sans les tests
-RUN ./mvnw clean install -DskipTests
+# Compile avec Maven
+RUN mvn clean install -DskipTests
 
-# Expose le port (ajuste si nécessaire)
+# Expose le port de ton app (à adapter si ce n’est pas 8080)
 EXPOSE 8080
 
-# Démarre l’application
+# Lancer l'app Spring Boot
 CMD ["java", "-jar", "target/*.jar"]
