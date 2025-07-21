@@ -3,4 +3,4 @@ services:
     name: projet-formation-alyra
     env: docker
     plan: free
-    dockerfilePath: back-front/Dockerfile
+    dockerfilePath: Dockerfile  # car maintenant il est à la racine
